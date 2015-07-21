@@ -38,6 +38,8 @@ Vagrant.configure(2) do |config|
 
     broker.vm.provision "shell", inline: "ln -sf /vagrant/logstash/broker.conf /etc/logstash/conf.d/broker.conf"
 
+    broker.vm.provision :reload
+
   end
 
   config.vm.define "client" do |client|
@@ -45,8 +47,6 @@ Vagrant.configure(2) do |config|
     client.vm.network "private_network", ip: "172.28.128.102"
 
     client.vm.provision "shell", inline: "ln -sf /vagrant/ssl/logstash-forwarder.crt /etc/pki/tls/certs/logstash-forwarder.crt"
-    client.vm.provision "shell", inline: "ln -sf /vagrant/ssl/logstash-forwarder.key /etc/pki/tls/private/logstash-forwarder.key"
-    client.vm.provision "shell", inline: "ln -sf /vagrant/logstash/logstash-forwarder.conf /etc/logstash-forwarder.conf"
 
     client.vm.provision "shell", inline: "ln -sf /vagrant/hiera.yaml /etc/hiera.yaml"
     client.vm.provision "shell", inline: "ln -sf /vagrant/hiera.yaml /etc/puppet/hiera.yaml"

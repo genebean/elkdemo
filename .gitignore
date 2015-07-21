@@ -1,1 +1,3 @@
 .vagrant/
+logstash-forwarder.crt
+logstash-forwarder.key
