@@ -29,3 +29,36 @@ To get started all you need to do is run
 ```bash
 $ vagrant up
 ```
+
+Once all machines are up you can go to the following URL's:
+* Elasticsearch: http://localhost:9200
+* kopf plugin to see info about this Elasticsearch setup:
+  http://localhost:9200/_plugin/kopf/
+* Kibana: http://localhost:5601
+
+You can easily generate a bunch of log entries by running `yum -y upgrade`
+on the client.
+
+Both the broker and the server also log to stdout. By running
+
+```bash
+$ tail -f /var/log/logstash/logstash.stdout
+```
+
+you can see logs in Ruby format like this one:
+
+```ruby
+{
+       "message" => "Jul 20 22:31:06 localhost yum[3791]: Updated: dracut-kernel-004-356.el6_6.3.noarch",
+      "@version" => "1",
+    "@timestamp" => "2015-07-21T02:31:13.196Z",
+          "type" => "syslog",
+          "tags" => [
+        [0] "lumberjack",
+        [1] "redis"
+    ],
+          "file" => "/var/log/messages",
+          "host" => "client.localdomain",
+        "offset" => "87573"
+}
+```

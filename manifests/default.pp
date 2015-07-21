@@ -34,7 +34,38 @@ node 'server' {
     enable  => true,
     require => Package['logstash'],
   }
-}
+
+  class { 'elasticsearch':
+    autoupgrade  => true,
+    config       => { 'cluster.name' => 'logstash' },
+    manage_repo  => true,
+    repo_version => '1.7',
+    require      => Package['java-1.8.0-openjdk'],
+  }
+
+  elasticsearch::instance { 'es-01':
+    config => { 'node.name' => $::hostname }, # Configuration hash
+    init_defaults => { 'ES_HEAP_SIZE' => '1g'}, # Init defaults hash
+    #datadir => [ ],       # Data directory
+  }
+
+  elasticsearch::plugin{'lmenezes/elasticsearch-kopf':
+    instances  => 'es-01',
+  }
+
+  class { '::kibana4':
+    package_ensure    => '4.1.1-linux-x64',
+    package_provider  => 'archive',
+    service_name      => 'kibana',
+    symlink           => true,
+    manage_user       => true,
+    kibana4_user      => kibana,
+    kibana4_group     => kibana,
+    elasticsearch_url => 'http://localhost:9200',
+  }
+
+
+} # end server
 
 node 'broker' {
   notice("Running code in /vagrant/manifests/default.pp's broker node block")

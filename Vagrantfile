@@ -8,16 +8,20 @@ Vagrant.configure(2) do |config|
 
     server.vm.hostname = "server.localdomain"
     server.vm.network "private_network", ip: "172.28.128.100"
+    server.vm.network "forwarded_port", guest: 9200, host: 9200
+    server.vm.network "forwarded_port", guest: 5601, host: 5601
 
     server.vm.provision "shell", inline: "ln -sf /vagrant/hiera.yaml /etc/hiera.yaml"
     server.vm.provision "shell", inline: "ln -sf /vagrant/hiera.yaml /etc/puppet/hiera.yaml"
+    server.vm.provision "shell", inline: "puppet module install elasticsearch-elasticsearch"
+    server.vm.provision "shell", inline: "puppet module install lesaux-kibana4"
     server.vm.provision "puppet" do |puppet|
       puppet.hiera_config_path = "hiera.yaml"
     end
 
     server.vm.provision "shell", inline: "ln -sf /vagrant/logstash/server.conf /etc/logstash/conf.d/server.conf"
 
-    server.vm.post_up_message = "Run ' sudo -u logstash /opt/logstash/bin/logstash -f /etc/logstash/conf.d/server.conf ' to test logstash"
+    server.vm.post_up_message = "Kibana 4 should be available at http://localhost:5601"
 
 
   end
