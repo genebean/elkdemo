@@ -20,7 +20,7 @@ node 'server' {
     require => Yumrepo['logstash'],
   }
 
-  $logs = [ '/var/log/messages']
+  $logs = [ '/var/log/messages', ]
   file { $logs:
     ensure  => file,
     group   => 'logstash',
@@ -108,7 +108,7 @@ node 'broker' {
     require => Yumrepo['logstash'],
   }
 
-  $logs = [ '/var/log/messages']
+  $logs = [ '/var/log/messages', ]
   file { $logs:
     ensure  => file,
     group   => 'logstash',
@@ -142,7 +142,7 @@ node 'client' {
     require => Yumrepo['logstash-forwarder'],
   }
 
-  $logs = [ '/var/log/messages']
+  $logs = [ '/var/log/messages', ]
   file { $logs:
     ensure  => file,
     group   => 'logstash-forwarder',
