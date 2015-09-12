@@ -10,12 +10,13 @@ This repo is a demonstration of a 3 node ELK stack:
 
 ## Dependency
 
-As part of the setup the broker vm needs rebooting. This is handled by a Vagrant
-plugin called "[Vagrant Reload](https://github.com/aidanns/vagrant-reload)."
-If you don't have the plugin installed already just run the following:
+If you have the Vagrant plugin
+"[Vagrant Cachier](https://github.com/fgrehm/vagrant-cachier)" installed this
+project will utilize it to save you a fair amount of downloading. If you don't
+have the plugin installed already just run the following:
 
 ```bash
-$ vagrant plugin install vagrant-reload
+$ vagrant plugin install vagrant-cachier
 ```
 
 As a byproduct of the type of setup this is, more memory is required than with
