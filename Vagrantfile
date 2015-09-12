@@ -20,6 +20,7 @@ Vagrant.configure(2) do |config|
     end
 
     server.vm.provision "shell", inline: "ln -sf /vagrant/logstash/server.conf /etc/logstash/conf.d/server.conf"
+    server.vm.provision "shell", inline: "service logstash restart"
 
     server.vm.post_up_message = "Kibana 4 should be available at http://localhost:5601"
 
@@ -41,8 +42,11 @@ Vagrant.configure(2) do |config|
     end
 
     broker.vm.provision "shell", inline: "ln -sf /vagrant/logstash/broker.conf /etc/logstash/conf.d/broker.conf"
+    broker.vm.provision "shell", inline: "service logstash restart"
 
-    broker.vm.provision :reload
+    # this is a workaround for a bug listed at https://github.com/elastic/logstash/issues/3776 on logstash-1.5.4
+    broker.vm.provision "shell", inline: "/opt/logstash/bin/plugin update logstash-input-lumberjack"
+    broker.vm.provision "shell", inline: "service logstash restart"
 
   end
 
