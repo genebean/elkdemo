@@ -54,7 +54,7 @@ node 'server' {
   }
 
   class { '::kibana4':
-    package_ensure    => '4.1.1-linux-x64',
+    package_ensure    => '4.1.2-linux-x64',
     package_provider  => 'archive',
     service_name      => 'kibana',
     symlink           => true,
